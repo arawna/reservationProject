@@ -1,6 +1,6 @@
 package com.htksoft.reservation.entity;
 
-import com.htksoft.reservation.dto.CityDto;
+import com.htksoft.reservation.dto.BranchDto;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @jakarta.persistence.Entity
-@Table(name = "citys")
-public class City extends Entity {
+@Table(name = "branches")
+public class Branch extends Entity {
 
     @Id
     @Column(nullable = false)
@@ -21,8 +21,8 @@ public class City extends Entity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public CityDto toDto() {
-        return CityDto.builder()
+    public BranchDto toDto() {
+        return BranchDto.builder()
                 .id(this.id)
                 .name(this.name)
                 .build();

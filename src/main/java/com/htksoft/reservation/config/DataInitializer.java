@@ -1,6 +1,8 @@
 package com.htksoft.reservation.config;
 
+import com.htksoft.reservation.entity.Branch;
 import com.htksoft.reservation.entity.City;
+import com.htksoft.reservation.repository.BranchRepository;
 import com.htksoft.reservation.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -14,10 +16,12 @@ import java.util.List;
 public class DataInitializer implements CommandLineRunner {
 
     private final CityRepository cityRepository;
+    private final BranchRepository branchRepository;
 
     @Override
     public void run(String... args) {
         initializeCities();
+        initializeBranches();
     }
 
     private void initializeCities() {
@@ -107,6 +111,35 @@ public class DataInitializer implements CommandLineRunner {
             );
             
             cityRepository.saveAll(cities);
+        }
+    }
+
+    private void initializeBranches() {
+        if (branchRepository.count() == 0) {
+            List<Branch> branches = Arrays.asList(
+                Branch.builder().id(1L).name("Dahiliye").build(),
+                Branch.builder().id(2L).name("Kardiyoloji").build(),
+                Branch.builder().id(3L).name("Nöroloji").build(),
+                Branch.builder().id(4L).name("Ortopedi").build(),
+                Branch.builder().id(5L).name("Göz Hastalıkları").build(),
+                Branch.builder().id(6L).name("Kulak Burun Boğaz").build(),
+                Branch.builder().id(7L).name("Çocuk Sağlığı ve Hastalıkları").build(),
+                Branch.builder().id(8L).name("Kadın Hastalıkları ve Doğum").build(),
+                Branch.builder().id(9L).name("Üroloji").build(),
+                Branch.builder().id(10L).name("Psikiyatri").build(),
+                Branch.builder().id(11L).name("Dermatoloji").build(),
+                Branch.builder().id(12L).name("Fizik Tedavi ve Rehabilitasyon").build(),
+                Branch.builder().id(13L).name("Genel Cerrahi").build(),
+                Branch.builder().id(14L).name("Beyin ve Sinir Cerrahisi").build(),
+                Branch.builder().id(15L).name("Plastik Cerrahi").build(),
+                Branch.builder().id(16L).name("Göğüs Hastalıkları").build(),
+                Branch.builder().id(17L).name("Kalp ve Damar Cerrahisi").build(),
+                Branch.builder().id(18L).name("Endokrinoloji").build(),
+                Branch.builder().id(19L).name("Gastroenteroloji").build(),
+                Branch.builder().id(20L).name("Hematoloji").build()
+            );
+            
+            branchRepository.saveAll(branches);
         }
     }
 } 

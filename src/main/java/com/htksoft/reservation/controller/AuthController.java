@@ -4,6 +4,8 @@ import com.htksoft.reservation.dto.JwtResponse;
 import com.htksoft.reservation.dto.LoginRequest;
 import com.htksoft.reservation.dto.SignupRequest;
 import com.htksoft.reservation.entity.User;
+import com.htksoft.reservation.repository.BranchRepository;
+import com.htksoft.reservation.repository.CityRepository;
 import com.htksoft.reservation.repository.UserRepository;
 import com.htksoft.reservation.security.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +33,8 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final CityRepository cityRepository;
+    private final BranchRepository branchRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
@@ -48,7 +52,7 @@ public class AuthController {
             User user = userRepository.findByEmail(loginRequest.getEmail())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getCompanyName(), user.getEmail()));
+            return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getCompanyName(), user.getEmail(), user.getCity().toDto(), user.getBranch().toDto()));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
@@ -73,12 +77,26 @@ public class AuthController {
                     .body(new MessageResponse("Error: Company name is already taken!"));
         }
 
+        if (!branchRepository.existsById(signUpRequest.getBranchId())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid branch id!"));
+        }
+
+        if(!cityRepository.existsById(signUpRequest.getCityId())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid city id!"));
+        }
+
         try {
             // Yeni kullanıcı oluştur
             User user = User.builder()
                     .companyName(signUpRequest.getCompanyName())
                     .email(signUpRequest.getEmail())
                     .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                    .city(cityRepository.findById(signUpRequest.getCityId()).orElse(null))
+                    .branch(branchRepository.findById(signUpRequest.getBranchId()).orElse(null))
                     .build();
 
             userRepository.save(user);

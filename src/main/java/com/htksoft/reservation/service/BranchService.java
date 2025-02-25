@@ -1,9 +1,9 @@
 package com.htksoft.reservation.service;
 
 import com.htksoft.reservation.core.response.Response;
-import com.htksoft.reservation.dto.CityDto;
-import com.htksoft.reservation.entity.City;
-import com.htksoft.reservation.repository.CityRepository;
+import com.htksoft.reservation.dto.BranchDto;
+import com.htksoft.reservation.entity.Branch;
+import com.htksoft.reservation.repository.BranchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,19 +11,20 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CityService {
+public class BranchService {
 
-    private final CityRepository cityRepository;
+    private final BranchRepository branchRepository;
 
     public Response<Object> getAll() {
 
-        List<CityDto> cities = cityRepository.findAll().stream().map(City::toDto).toList();
+        List<BranchDto> branchDtoList = branchRepository.findAll().stream().map(Branch::toDto).toList();
 
         return Response.builder()
                 .statusCode(200)
                 .message("Data Listed")
                 .messageCode("success")
-                .data(cities)
+                .data(branchDtoList)
                 .build();
     }
+
 }

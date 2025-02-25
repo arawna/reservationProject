@@ -31,4 +31,12 @@ public class User extends com.htksoft.reservation.entity.Entity {
     @NotBlank
     @Size(max = 120)
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 } 
