@@ -24,7 +24,7 @@ import org.springframework.http.HttpStatus;
 import com.htksoft.reservation.dto.MessageResponse;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "Authentication management APIs")
 public class AuthController {
