@@ -1,8 +1,11 @@
 package com.htksoft.reservation.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -13,7 +16,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-public class Entity {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
