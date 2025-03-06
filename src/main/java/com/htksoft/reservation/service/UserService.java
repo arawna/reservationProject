@@ -1,6 +1,7 @@
 package com.htksoft.reservation.service;
 
 import com.htksoft.reservation.core.response.Response;
+import com.htksoft.reservation.dto.UserAppointmentRequest;
 import com.htksoft.reservation.dto.UserDto;
 import com.htksoft.reservation.dto.UserProfileUpdateRequest;
 import com.htksoft.reservation.entity.Appointment;
@@ -8,12 +9,16 @@ import com.htksoft.reservation.entity.User;
 import com.htksoft.reservation.repository.AppointmentRepository;
 import com.htksoft.reservation.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.htksoft.reservation.security.JwtUtils;
 
+import java.security.PrivateKey;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,6 +82,37 @@ public class UserService {
         Optional<User> userList = userRepository.findById(userId);
         return userList;
     }
+
+    public void updateUserByAppointments(UserAppointmentRequest userAppointmentRequest,String email,Long apoId){
+        Appointment appointment = this.appointmentRepository.findById(apoId)
+                .orElseThrow(() -> new RuntimeException("Yokki böyle bir Randevu"));
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+
+
+        appointment.setIdentity_number(userAppointmentRequest.getIdentity_number());
+        appointment.setFirst_name(userAppointmentRequest.getFirst_name());
+        appointment.setLast_name(userAppointmentRequest.getLast_name());
+        appointment.setAppointment_datetime(userAppointmentRequest.getAppointment_datetime());
+
+        appointmentRepository.save(appointment);
+
+    }
+
+    public User getAuthUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı: " + email));
+    }
+    public void deleteAppointmentsByUser(String email,Long apoId){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+        Appointment appointment = this.appointmentRepository.findById(apoId)
+                .orElseThrow(() -> new RuntimeException("Yokki böyle bir Randevu"));
+
+        appointmentRepository.deleteById(apoId);
+    }
+
+
+
 
 
 }
