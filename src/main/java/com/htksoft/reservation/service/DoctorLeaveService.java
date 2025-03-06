@@ -1,6 +1,7 @@
 package com.htksoft.reservation.service;
 
 import com.htksoft.reservation.dto.DoctorLeaveRequestDto;
+import com.htksoft.reservation.entity.Appointment;
 import com.htksoft.reservation.entity.DoctorLeave;
 import com.htksoft.reservation.entity.User;
 import com.htksoft.reservation.repository.DoctorLeaveRepository;
@@ -48,6 +49,15 @@ public class DoctorLeaveService {
         doctorLeave.setStatuses(doctorLeaveRequestDto.getStatuses());
         doctorLeave.setDescription(doctorLeaveRequestDto.getDescription());
         doctorLeaveRepository.save(doctorLeave);
+    }
+    public void deleteLeave(String email,Long leaveId){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("user yook"));
+        DoctorLeave doctorLeave = this.doctorLeaveRepository.findById(leaveId).orElseThrow(() -> new RuntimeException("İzin yok"));
+
+        if(!doctorLeave.getUser().getId().equals(user.getId())){
+            throw new RuntimeException("yetkin yok");
+        }
+        doctorLeaveRepository.deleteById(leaveId);
     }
 
 }

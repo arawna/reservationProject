@@ -46,5 +46,12 @@ public class DoctorLeaveController {
         String email = authentication.getName();
         doctorLeaveService.updateLeave(doctorLeaveRequestDto, email, leaveId);
     }
+    @DeleteMapping("/deleteLeave")
+    public void deleteLeave(@RequestParam Long leaveId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        doctorLeaveService.deleteLeave(email,leaveId);
+
+    }
 }
 
