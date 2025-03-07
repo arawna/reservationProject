@@ -36,6 +36,8 @@ public class SecurityConfig {
             "/api/v1/city/getAll",
             "/api/v1/branch/getAll",
             "/api/v1/auth/**",
+            "/api/v1/comment/addComment",
+            "/api/v1/comment/user/{userId}",
             "/v3/api-docs/**",
             "/v3/api-docs.yaml",
             "/swagger-ui/**",
