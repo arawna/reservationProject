@@ -20,5 +20,6 @@ public class AppointmentReservationRequest {
     private LocalDate birth_date;
     private User user_id;
     private LocalDateTime appointment_datetime;
-
 }
+
+

@@ -5,8 +5,10 @@ import com.htksoft.reservation.dto.UserAppointmentRequest;
 import com.htksoft.reservation.dto.UserDto;
 import com.htksoft.reservation.dto.UserProfileUpdateRequest;
 import com.htksoft.reservation.entity.Appointment;
+import com.htksoft.reservation.entity.Comment;
 import com.htksoft.reservation.entity.User;
 import com.htksoft.reservation.repository.AppointmentRepository;
+import com.htksoft.reservation.repository.CommentRepository;
 import com.htksoft.reservation.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtils jwt;
     private final AppointmentRepository appointmentRepository;
+    private final CommentRepository commentRepository;
 
     public void updateProfileDetails(String email, UserProfileUpdateRequest request) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
@@ -110,6 +113,8 @@ public class UserService {
 
         appointmentRepository.deleteById(apoId);
     }
+
+
 
 
 
